@@ -9,6 +9,6 @@ namespace Laboratorio2_ArbolBinario.Services
     public interface ISingleton
     {
         List<Item> DataSource { get; set; }
-        ABdBNodo<IndexModel> IndexTree { get; set; }
+        TreeNode<IndexModel> IndexTree { get; set; }
     }
 }

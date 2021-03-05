@@ -32,43 +32,53 @@ namespace Laboratorio2_ArbolBinario.Controllers
         public IActionResult Grid(DataTableRequest data)
         {
             DataTableResponse output = new DataTableResponse() { Draw = data.Draw };
+
             if (data.Search.ContainsKey("value") && !string.IsNullOrWhiteSpace(data.Search["value"]))
             {
-                
+                // Buscar por nombre en el arbol
             }
             else
             {
                 // Pagination directly on datasource
-                output.Data = _singleton.DataSource.Where(d => d.Existence > 0).Skip(data.Start).Take(data.Length).ToList();
-                output.RecordsTotal = _singleton.DataSource.Where(d => d.Existence > 0).Count();
+                output.Data = _singleton.DataSource.Where(d => d.Existencia > 0).Skip(data.Start).Take(data.Length).ToList();
+                output.RecordsTotal = _singleton.DataSource.Where(d => d.Existencia > 0).Count();
                 output.RecordsFiltered = output.RecordsTotal;
             }
 
             return Ok(output);
         }
+
         public IActionResult ConfirmOrder(Dictionary<int, int> data)
         {
             BasicResponse output = new BasicResponse();
+
             try
             {
+                // Update counters on datasource
                 if (data?.Count > 0)
                 {
                     foreach (var item in data)
                     {
-                        _singleton.DataSource[item.Key - 1].Existence -= item.Value;
+                        _singleton.DataSource[item.Key - 1].Existencia -= item.Value;
                     }
                 }
-                output.Succes = true;
+
+                // Recalculate tree
+
+                output.Success = true;
                 output.Message = "Pedido confirmado";
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                output.Succes = false;
-                output.Message = "Ha ocurrido un error al confirmar el pedido";
-                _logger.LogError(exception.Message);
+                output.Success = false;
+                output.Message = "Ocurrio un error al confirmar el pedido";
+
+                _logger.LogError(ex.Message);
             }
+
             return Ok(output);
         }
+
         public IActionResult ResetInventory()
         {
             BasicResponse output = new BasicResponse();
@@ -76,25 +86,26 @@ namespace Laboratorio2_ArbolBinario.Controllers
             {
                 for (int i = 0; i < _singleton.DataSource.Count; i++)
                 {
-                    _singleton.DataSource[i].Existence = _random.Next(1, 15);
+                    _singleton.DataSource[i].Existencia = _random.Next(1, 15);
                 }
 
 
                 // Recalculate tree
 
-                output.Succes = true;
+                output.Success = true;
                 output.Message = "Inventario reabastecido";
             }
             catch (Exception ex)
             {
-                output.Succes = false;
-                output.Message = "Ha ocurrido un error al reabastecer el inventario";
+                output.Success = false;
+                output.Message = "Ha ocurrido un error al confirmar el pedido";
 
                 _logger.LogError(ex.Message);
             }
 
             return Ok(output);
         }
+
         public IActionResult UploadFile(IFormFile file)
         {
             BasicResponse output = new BasicResponse();
@@ -118,12 +129,12 @@ namespace Laboratorio2_ArbolBinario.Controllers
                             _singleton.DataSource.Add(record);
                         }
 
-                        output.Succes = true;
+                        output.Success = true;
                         output.Message = $"Datos cargados: {_singleton.DataSource.Count}";
                     }
                     catch (Exception ex)
                     {
-                        output.Succes = false;
+                        output.Success = false;
                         output.Message = "Ha ocurrido un error al agregar los elementos del archivo";
 
                         _logger.LogError(ex.Message);
@@ -132,8 +143,8 @@ namespace Laboratorio2_ArbolBinario.Controllers
             }
             else
             {
-                output.Succes = false;
-                output.Message = "Debe ingresar un archivo con información";
+                output.Success = false;
+                output.Message = "Ingrese un archivo con información";
             }
 
             return Ok(output);
@@ -148,7 +159,7 @@ namespace Laboratorio2_ArbolBinario.Controllers
 
             csv.WriteRecords(_singleton.DataSource);
 
-            return File(output.ToArray(), "text/csv", "Inventario.csv");
+            return File(output.ToArray(), "text/csv", "Mock_Data (WIP).csv");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -156,6 +167,9 @@ namespace Laboratorio2_ArbolBinario.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
         public IActionResult Privacy()
         {
             return View();

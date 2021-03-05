@@ -10,17 +10,17 @@ namespace Laboratorio2_ArbolBinario.Models
     {
         [Name("id")]
         public int Id { get; set; }
-        [Name("name")]
-        public string Name { get; set; }
-        [Name("description")]
-        public string Description { get; set; }
-        [Name("production_house")]
-        public string Production_House { get; set; }
+        [Name("nombre")]
+        public string Nombre { get; set; }
+        [Name("descripcion")]
+        public string Descripcion { get; set; }
+        [Name("casa_productora")]
+        public string CasaProductora { get; set; }
 
-        [Name("price")]
+        [Name("precio")]
         public string Price { get; set; }
 
-        [Name("existence")]
-        public int Existence { get; set; }
+        [Name("existencia")]
+        public int Existencia { get; set; }
     }
 }

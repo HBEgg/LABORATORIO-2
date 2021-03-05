@@ -9,7 +9,7 @@ namespace Laboratorio2_ArbolBinario.Services
     public class Singleton : ISingleton
     {
         public List<Item> DataSource { get; set; } = new List<Item>();
-        public ABdBNodo<IndexModel> IndexTree { get; set; }
+        public TreeNode<IndexModel> IndexTree { get; set; }
         public Singleton()
         {
 
