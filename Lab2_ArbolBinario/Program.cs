@@ -16,11 +16,21 @@ namespace InventarioBST
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static object CreateHostBuilder(string[] args)
+        {
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+            throw new NotImplementedException();
+        }
+
+        /*public static IHostBuilder CreateHostBuilder(string[] args) =>7
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });*/
     }
 }
